@@ -1,14 +1,13 @@
-FROM node:21-alpine3.18
+FROM node:latest
 
-ADD . /app
+# Set the working directory
 WORKDIR /app
 
+# Copy package.json and package-lock.json
+COPY package*.json ./
 
-# Install any needed packages specified in package.json
-RUN npm cache clean --force
 RUN npm install
-RUN npm run build
+COPY . .
 
-EXPOSE 3000
+CMD ["npm", "start"]
 
-CMD ["npm", "run", "dev"]

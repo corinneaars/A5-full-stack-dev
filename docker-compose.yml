@@ -14,6 +14,8 @@ services:
       context: ./fastapi
       dockerfile: Dockerfile
     image: dev-fastapi
+    volumes:
+      - ./fastapi:/app
     ports:
       - "8000:8000"
     depends_on:
@@ -24,7 +26,6 @@ services:
     build: 
       context: ./nextjs
       dockerfile: Dockerfile
-    image: dev-nextjs
     volumes:
       - ./nextjs:/app
       # These allow us to do hot rebuilding of the Next.js app

@@ -4,3 +4,5 @@ uvicorn
 pymysql
 mysql-connector-python
 sqlalchemy
+geoalchemy2
+shapely

@@ -1,10 +1,19 @@
+/* global fetch */
 import Layout from "../components/layout";
 import React from 'react';
 import { useTable, useSortBy } from 'react-table';
 import styles from './CanadianCustomers.module.css'; 
 
 
-const CanadianCustomers = ({ canadianCustomers }) => {
+
+const CanadianCustomers = ({ canadianCustomers, error}) => {
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
+
+    if (!canadianCustomers) {
+        return <div>Loading...</div>;
+    }
     const data = React.useMemo(() => canadianCustomers, [canadianCustomers]);
 
     const columns = React.useMemo(() => [
@@ -75,11 +84,18 @@ const CanadianCustomers = ({ canadianCustomers }) => {
 };
 
 export async function getServerSideProps() {
-    const response = await fetch('http://fastapi:8000/getCanadianCustomers');
-    const canadianCustomers = await response.json();
-
-    return { props: { canadianCustomers } };
-}
+    try {
+      const response = await fetch('http://fastapi:8000/getCanadianCustomers');
+      if (!response.ok) {
+        throw new Error(`Failed to fetch data: ${response.status}`);
+      }
+      const canadianCustomers = await response.json();
+      return { props: { canadianCustomers } };
+    } catch (error) {
+      console.error(error);
+      return { props: { error: error.message } };
+    }
+  }
 
 
 export default CanadianCustomers;
