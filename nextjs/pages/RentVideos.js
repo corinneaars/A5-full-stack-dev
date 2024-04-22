@@ -24,7 +24,7 @@ export default function RentVideos() {
         setCountries({ response.data.countries})
       }
     } else {
-      alert('Help, it died!');
+      alert('Help, it dieded');
     }
   };
 
