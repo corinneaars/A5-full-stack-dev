@@ -65,8 +65,8 @@ def getCanadianCustomers():
     finally:
         session.close()
     
-@app.post("/saveNewCustomer")
-def saveNewCustomer(customer: dict):
+@app.post("/addCustomer")
+def addCustomer(customer: dict, address: dict, city: dict, country: dict):
     engine = create_engine(DATABASE_URL)
     automap = automap_base()
     automap.prepare(engine, reflect=True)
@@ -132,10 +132,11 @@ def checkVideoAvailability(storeid: int, id: int):
     """), {"film_id": id, "store_id": storeid})
     inventory = [row[0] for row in result]
     return inventory
+
+
   
-  
-@app.get('/getEmail/{email}')
-def getEmail(email: str):
+@app.get('/getCustomerbyEmail/{email}')
+def getCustomerbyEmail(email: str):
     store_id = 1
     engine = create_engine(DATABASE_URL)
     automap = automap_base()
@@ -151,13 +152,15 @@ def getEmail(email: str):
         address = session.query(automap.classes.address).filter(automap.classes.address.address_id == customer.address_id).first()            
         city = session.query(automap.classes.city).filter(automap.classes.city.city_id == address.city_id).first()
         country = session.query(automap.classes.country).filter(automap.classes.country.country_id == city.country_id).first()
-
-        # return {"email": "exists", "customer": to_dict( automap,  customer), "address": to_dict( automap,  address), "city": to_dict( automap,  city), "country": to_dict( automap,  country)}    
+        print(f'customer: {to_dict(automap, customer)}, address: {to_dict(automap, address)}, city: {to_dict(automap, city)}, country: {to_dict(automap, country)}')
         return {
-            "customer": to_dict( automap,  customer) if customer else "",
-            "address": to_dict( automap,  address) if address else "",
-            "city": to_dict( automap,  city) if city else "",
-            "country": to_dict( automap,  country) if country else ""
+            "newcustomer": "false",
+            "customer": to_dict( automap,  customer),
+            "address": to_dict( automap,  address),
+            "city": to_dict( automap,  city),
+            "country": to_dict( automap,  country),
+            "cities": "",
+            "countries": ""
         }
 
     else:
@@ -166,13 +169,17 @@ def getEmail(email: str):
         newaddress = automap.classes.address()
         cities = session.query(automap.classes.city).all()
         countries = session.query(automap.classes.country).all()
-        return {
-            "customer":  to_dict( automap,  newcustomer) if customer else "", 
-            "address": to_dict( automap,  newaddress) if customer else "", 
-            "cities": to_dict( automap,  cities) if customer else "", 
-            "countries": to_dict( automap,  countries) if customer else ""
-        }
+        print(f'customer: {to_dict(automap, newcustomer)}, address: {to_dict(automap, newaddress)}, cities: {to_dict(automap, cities)}, countries: {to_dict(automap, countries)}')
 
+        return {
+            "newcustomer": "true",
+            "customer":  to_dict( automap,  newcustomer), 
+            "address": to_dict( automap,  newaddress), 
+            "city": "",
+            "country": "",
+            "cities": to_dict( automap,  cities),
+            "countries": to_dict( automap,  countries)
+        }
 
   
         

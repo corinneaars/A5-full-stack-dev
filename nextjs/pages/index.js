@@ -23,6 +23,15 @@ export default function Home() {
       </nav>
       <main className="container py-5">
         <h1>Welcome to our Video Store!</h1>
+        <p>
+          Our video store is backed by MySQL's Sakila database, one of the most popular and reliable databases in the industry. MySQL is used by many of the world's largest and fastest-growing organizations to save time and money powering their high-volume websites, business-critical systems, and packaged software.
+        </p>
+        <p>
+          We use Next.js, a React framework that enables features like server-side rendering and generating static websites for React based web applications. It is one of the top frameworks for building React applications.
+        </p>
+        <p>
+          Our backend is powered by FastAPI, a modern, fast (high-performance), web framework for building APIs with Python 3.6+ based on standard Python type hints. It is one of the fastest Python frameworks available, on par with NodeJS and Go.
+        </p>
       </main>
     </Layout>
   );

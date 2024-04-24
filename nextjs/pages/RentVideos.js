@@ -1,30 +1,51 @@
 import { useState } from 'react';
 import axios from 'axios';
+import Select from 'react-select';
 
 export default function RentVideos() {
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState('');
   const [customer, setCustomer] = useState({});
+  const [address, setAddress] = useState('');
+  const [city, setCity] = useState('');
+  const [country, setCountry] = useState('');
+  const [cities, setCities] = useState([]);
+  const [countries, setCountries] = useState([]);
   const [videoId, setVideoId] = useState('');
   const [rentedVideos, setRentedVideos] = useState([]);
 
-  const isNewEmail = async (event) => {
+  const getCustomerbyEmail = async (event) => {
     event.preventDefault();
 
-    const response = await axios.get(`/api/proxy/getEmail/${email}`);
-    if (response.data) {
-      setStep(3);
-      setCustomer({ response.data.customer });
-      setAddress({ response.data.address });
-      if (response.data.city){
-        setCity({ response.data.city }) ;
-        setCountry({ response.data.country });
+    const response = await axios.get(`/api/proxy/getCustomerbyEmail/${email}`);
+    if (response.data.newcustomer === "true") {
+      // Add new Customer
+      if (response.data.customer) {
+        setStep(3);
+        setCustomer(response.data.customer);
+        setAddress(response.data.address);
+        if (response.data.city){
+          setCity(response.data.city);
+          setCountry(response.data.country);
+        } else {
+          setCities(response.data.cities);
+          setCountries(response.data.countries);
+        }
       } else {
-        setCities({ response.data.cities})
-        setCountries({ response.data.countries})
+        alert('Help, it dieded');
       }
     } else {
-      alert('Help, it dieded');
+      // Customer already exists
+      setStep(2);
+      setCustomer(response.data.customer);
+      setAddress(response.data.address);
+      if (response.data.city){
+        setCity(response.data.city);
+        setCountry(response.data.country);
+      } else {
+        setCities(response.data.cities);
+        setCountries(response.data.countries);
+      }
     }
   };
 
@@ -54,7 +75,7 @@ export default function RentVideos() {
   return (
     <div>
       {step === 1 && (
-        <form onSubmit={isNewEmail}>
+        <form onSubmit={getCustomerbyEmail}>
           <label>
             Email:
             <input type="email" value={email} onChange={e => setEmail(e.target.value)} />
@@ -64,35 +85,40 @@ export default function RentVideos() {
       )}
 
       {step === 3 && (
-        <form onSubmit={handleCustomerInfoSubmit}>
+        <form onSubmit={addCustomer}>
           <label>
-            Email:
-            <input type="email" value={customer.email} disabled />
-          </label>
-          <label>
-            First Name:
-            <input type="text" value={customer.firstName} onChange={e => setCustomer({ ...customer, firstName: e.target.value })} />
-          </label>
-          <label>
-            Last Name:
-            <input type="text" value={customer.lastName} onChange={e => setCustomer({ ...customer, lastName: e.target.value })} />
+            Customer Name:
+            <input type="text" value={customer.name} onChange={e => setCustomer({...customer, name: e.target.value})} required />
           </label>
           <label>
             Address:
-            <input type="text" value={customer.address} onChange={e => setCustomer({ ...customer, address: e.target.value })} />
+            <input type="text" value={address.address} onChange={e => setAddress({...address, address: e.target.value})} required />
           </label>
           <label>
             City:
-            <input type="text" value={customer.city} onChange={e => setCustomer({ ...customer, city: e.target.value })} />
+            {cities ? (
+              <Select
+                options={cities.map(city => ({ value: city.city_id, label: city.city }))}
+                onChange={selectedOption => setCity(selectedOption.value)}
+              />
+            ) : (
+              <input type="text" value={city.city} readOnly />
+            )}
           </label>
           <label>
             Country:
-            <input type="text" value={customer.country} onChange={e => setCustomer({ ...customer, country: e.target.value })} />
+            {countries ? (
+              <Select
+                options={countries.map(country => ({ value: country.country_id, label: country.country }))}
+                onChange={selectedOption => setCountry(selectedOption.value)}
+              />
+            ) : (
+              <input type="text" value={country.country} readOnly />
+            )}
           </label>
-          <button type="submit">Submit</button>
+          <input type="submit" value="Submit" />
         </form>
       )}
-
       {step === 2 && (
         <form onSubmit={handleVideoIdSubmit}>
           <label>

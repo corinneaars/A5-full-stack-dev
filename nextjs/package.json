@@ -13,6 +13,7 @@
     "react-dom": "latest",
     "next": "latest",
     "react-table": "latest", 
+    "react-select": "latest",
     "react-hook-form": "latest",
     "axios": "latest"
   },

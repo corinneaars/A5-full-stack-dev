@@ -2,10 +2,10 @@ import axios from 'axios';
 
 export default async function handler(req, res) {
   const { param } = req.query;
-  console.log(`curl http://fastapi:8000/isNewEmail/${param}`);
+  console.log(`curl http://fastapi:8000/getCustomerbyEmail/${param}`);
 
   try {
-    const response = await axios.get(`http://fastapi:8000/isNewEmail/${param}`);
+    const response = await axios.get(`http://fastapi:8000/getCustomerbyEmail/${param}`);
     res.status(response.status).json(response.data);
   } catch (error) {
     console.error(error.message); // Log the error message
