@@ -78,14 +78,14 @@ export default function RentVideos() {
         <form onSubmit={getCustomerbyEmail}>
           <label>
             Email:
-            <input type="email" value={email} onChange={e => setEmail(e.target.value)} />
+            <input type="email" value={email} onChange={e => setEmail(e.target.value)}/>
           </label>
           <button type="submit">Next</button>
         </form>
       )}
 
       {step === 3 && (
-        <form onSubmit={addCustomer}>
+        <form onSubmit={handleCustomerInfoSubmit}>
           <label>
             Customer Name:
             <input type="text" value={customer.name} onChange={e => setCustomer({...customer, name: e.target.value})} required />
