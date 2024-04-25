@@ -5,10 +5,16 @@
 import axios from 'axios';
 
 export default async function handler(req, res) {
-  const { body } = req;
+  console.log("addCustomer.js  |  Hellow from addCustomer.js")
+  console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+
+  const customer = req.body.customer;
+  const address = req.body.address;
+  const city = req.body.city;
+  const country = req.body.country;
 
   try {
-    const response = await axios.post('http://fastapi:8000/addCustomer', body);
+    const response = await axios.post('http://fastapi:8000/addCustomer', {customer, address, city, country});
 
     res.status(response.status).json(response.data);
   } catch (error) {

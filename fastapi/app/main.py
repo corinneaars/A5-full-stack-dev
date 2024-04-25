@@ -1,16 +1,41 @@
-import json
-from fastapi import FastAPI, HTTPException
-from sqlalchemy import create_engine, text, inspect, Column
+from datetime import datetime, timedelta
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.automap import automap_base
-from datetime import datetime, timedelta
-from geoalchemy2 import Geometry, WKTElement
-from shapely.wkt import loads
-
+from fastapi import FastAPI, Request
+from shapely.wkb import loads
+from pprint import pprint
 
 DATABASE_URL = "mysql+mysqlconnector://root:supersecretpassw0rd@mysql/sakila"
 
 app = FastAPI()
+
+engine = create_engine(DATABASE_URL)
+automap = automap_base()
+automap.prepare(engine, reflect=True)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+# Create a new type for each automapped class
+Customer = automap.classes.customer
+Address = automap.classes.address
+City = automap.classes.city
+Country = automap.classes.country
+Rental = automap.classes.rental
+Store = automap.classes.store
+Inventory = automap.classes.inventory
+# Fields and types from each class found in the database
+fieldsNtypes = {
+    "customer": { "customer_id": "int","first_name": "string", "last_name": "string", "email": "string", "store_id": "int", "address_id": "int", "active": "int", "create_date": "datetime", "last_update": "datetime"},
+    "address": { "address_id": "int","address": "string", "address2": "string", "district": "string", "city_id": "int", "postal_code": "string", "phone": "string", "location": {"type":"Point", "longitude": "float", "latitude": "float"}, "last_update": "datetime"},
+    "city": { "city_id": "int","city": "string", "country_id": "int", "last_update": "datetime"},
+    "country": {"countrys_id": "int", "country": "string", "last_update": "datetime"},
+    "rental": { "rental_id": "int", "rental_date": "datetime", "inventory_id": "int", "customer_id": "int", "return_date": "datetime", "staff_id": "int", "last_update": "datetime"},
+    "store": { "store_id": "int", "manager_staff_id": "int", "address_id": "int", "last_update": "datetime"},
+    "inventory": { "inventory_id": "int", "film_id": "int", "store_id": "int", "last_update": "datetime"},
+    "cities": { "city_id": "int", "city": "string", "country_id": "int", "last_update": "datetime"},
+    "countries": { "country_id": "int", "country": "string", "last_update": "datetime"}
+}   
+
 
 def to_dict(automap, obj):
     d = {}
@@ -23,19 +48,17 @@ def to_dict(automap, obj):
             # Check if location data is in WKT format
             try:
                 geom = loads(str(obj.location.data))
-                d['location'] = {"type": "Point", "coordinates": [geom.x, geom.y]}
+                d['location'] = {"type": "Point", "longitude": geom.x, "latitude": geom.y}
             except:
                 # Handle the case where location data is not in WKT format
                 # You may need to replace this with actual code to convert location data to WKT format
-                d['location'] = {"type": "Point", "coordinates": ["", ""]}
+                d['location'] = {"type": "Point", "longitude": "", "latitude": ""}
         else:
-            d['location'] = {"type": "Point", "coordinates": ["", ""]}
+            d['location'] = {"type": "Point", "longitude": "", "latitude": ""}
     else:
         d = obj.__dict__.copy()
         d.pop('_sa_instance_state', None)
     return d
-
-
 
 @app.get("/")
 async def root():
@@ -44,11 +67,6 @@ async def root():
 
 @app.get("/getCanadianCustomers")
 def getCanadianCustomers():
-    engine = create_engine(DATABASE_URL)
-    automap = automap_base()
-    automap.prepare(engine, reflect=True)
-
-    SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
     session = SessionLocal()
     try:
         result = session.execute(text("""
@@ -66,23 +84,43 @@ def getCanadianCustomers():
         session.close()
     
 @app.post("/addCustomer")
-def addCustomer(customer: dict, address: dict, city: dict, country: dict):
-    engine = create_engine(DATABASE_URL)
-    automap = automap_base()
-    automap.prepare(engine, reflect=True)
+async def addCustomer(request: Request):
+    print('HELLO! add Customer')
+    data = await request.json()
+    customer = data.get("customer")
+    address = data.get("address")
+    city = data.get("city")
+    country = data.get("country")
     
-    SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    # customer = Customer(data.get("customer"))
+    # address = Address(data.get("address"))
+    # city = City(data.get("city"))
+    # country = Country(data.get("country"))
+    
+    pprint(f'customer: {customer}, address: {address}, city: {city}, country: {country}')
     session = SessionLocal()
-    customer = automap.classes.Customer(**customer)
-    address = automap.classes.Address(**customer["address"])
-    store = automap.classes.Store(store_id=1)
-    customer.store_id = store.store_id
+    customer.store_id = 1
     session.add(customer)
+    session.add(address)
+    session.add(city)
+    session.add(country)
     session.commit()
+    # customer = session.query(automap.classes.customer).filter(automap.classes.customer.email == , automap.classes.customer.store_id == store_id).first()    
+    # address = session.query(automap.classes.address).filter(automap.classes.address.address_id == customer.address_id).first()            
+    # city = session.query(automap.classes.city).filter(automap.classes.city.city_id == address.city_id).first()
+    # country = session.query(automap.classes.country).filter(automap.classes.country.country_id == city.country_id).first()
     session.refresh(customer)
-    customerjson = customer.__dict__
+    return {
+        "newcustomer": "false",
+        "fieldsNtypes": fieldsNtypes,
+        "customer": to_dict( automap,  customer),
+        "address": to_dict( automap,  address),
+        "city": to_dict( automap,  city),
+        "country": to_dict( automap,  country),
+        "cities": "",
+        "countries": ""
+    }
     
-    return customerjson
 
 
     
@@ -138,13 +176,7 @@ def checkVideoAvailability(storeid: int, id: int):
 @app.get('/getCustomerbyEmail/{email}')
 def getCustomerbyEmail(email: str):
     store_id = 1
-    engine = create_engine(DATABASE_URL)
-    automap = automap_base()
-    automap.prepare(engine, reflect=True)
-    
-    SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
     session = SessionLocal()
-    # find the customer with the email and store_id
     customer = session.query(automap.classes.customer).filter(automap.classes.customer.email == email, automap.classes.customer.store_id == store_id).first()    
 
     if customer is not None:
@@ -152,9 +184,11 @@ def getCustomerbyEmail(email: str):
         address = session.query(automap.classes.address).filter(automap.classes.address.address_id == customer.address_id).first()            
         city = session.query(automap.classes.city).filter(automap.classes.city.city_id == address.city_id).first()
         country = session.query(automap.classes.country).filter(automap.classes.country.country_id == city.country_id).first()
-        print(f'customer: {to_dict(automap, customer)}, address: {to_dict(automap, address)}, city: {to_dict(automap, city)}, country: {to_dict(automap, country)}')
+        # print(f'customer: {to_dict(automap, customer)}, address: {to_dict(automap, address)}, city: {to_dict(automap, city)}, country: {to_dict(automap, country)}')
+
         return {
             "newcustomer": "false",
+            "fieldsNtypes": fieldsNtypes,
             "customer": to_dict( automap,  customer),
             "address": to_dict( automap,  address),
             "city": to_dict( automap,  city),
@@ -165,20 +199,23 @@ def getCustomerbyEmail(email: str):
 
     else:
         # create a new customer object to return with all the fields
-        newcustomer = automap.classes.customer(email=email, store_id=store_id)
-        newaddress = automap.classes.address()
+        customer = Customer(email=email, store_id=store_id)
+        address = Address()
+        city = City()
+        country = Country()
         cities = session.query(automap.classes.city).all()
         countries = session.query(automap.classes.country).all()
-        print(f'customer: {to_dict(automap, newcustomer)}, address: {to_dict(automap, newaddress)}, cities: {to_dict(automap, cities)}, countries: {to_dict(automap, countries)}')
+        # print(f'customer: {to_dict(automap, customer)}, address: {to_dict(automap, address)}, cities: {to_dict(automap, cities)}, countries: {to_dict(automap, countries)}')
 
         return {
             "newcustomer": "true",
-            "customer":  to_dict( automap,  newcustomer), 
-            "address": to_dict( automap,  newaddress), 
-            "city": "",
-            "country": "",
+            "fieldsNtypes": fieldsNtypes,
+            "customer":  to_dict( automap,  customer), 
+            "address": to_dict( automap,  address), 
+            "city": to_dict( automap,  city),
+            "country": to_dict( automap,  country),
             "cities": to_dict( automap,  cities),
-            "countries": to_dict( automap,  countries)
+            "countries": to_dict( automap,  countries),
         }
 
   
