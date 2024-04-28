@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.automap import automap_base
+from geoalchemy2 import Geometry, WKTElement, functions
 from fastapi import FastAPI, Request
 from shapely.wkb import loads
 from pprint import pprint
@@ -10,7 +11,7 @@ DATABASE_URL = "mysql+mysqlconnector://root:supersecretpassw0rd@mysql/sakila"
 
 app = FastAPI()
 
-engine = create_engine(DATABASE_URL)
+engine = create_engine(DATABASE_URL, echo=True)
 automap = automap_base()
 automap.prepare(engine, reflect=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -60,6 +61,9 @@ def to_dict(automap, obj):
         d.pop('_sa_instance_state', None)
     return d
 
+def print_object(obj):
+        print({key: value for key, value in obj.__dict__.items() if not key.startswith('_')})
+
 @app.get("/")
 async def root():
     return {"message": "Howdy"}
@@ -85,32 +89,114 @@ def getCanadianCustomers():
     
 @app.post("/addCustomer")
 async def addCustomer(request: Request):
-    print('HELLO! add Customer')
+    print(f'   main.py |   post:/addCustomer  |   HELLO! add Customer')
     data = await request.json()
-    customer = data.get("customer")
-    address = data.get("address")
-    city = data.get("city")
-    country = data.get("country")
+    if 'country_id' in data['country'].keys() and not data['country']['country_id']:
+        del data['country']['country_id']
+    if 'city_id' in data['city'].keys() and not data['city']['city_id']:
+        del data['city']['city_id']
+    if 'address_id' in data['address'].keys() and not data['address']['address_id']:
+        del data['address']['address_id']
+    if 'customer_id' in data['customer'].keys() and not data['customer']['customer_id']:
+        del data['customer']['customer_id']
+    # Convert from JSON to WKT format WKTElement('POINT(5 45)', srid=4326)
+    tmp_long = 0.0
+    tmp_lat = 0.0
+    point = str(WKTElement(f'POINT({tmp_long} {tmp_lat})', srid=0))
+    print(f'   main.py |   post:/addCustomer  |   BASE point: {point}')    
+    if 'location' in data['address'].keys():
+        if 'longitude' in data['address']['location'].keys():
+            if data['address']['location']['longitude']:
+                tmp_long = float(data['address']['location']['longitude'])
+        if 'latitude' in data['address']['location'].keys():
+            if data['address']['location']['latitude']:
+                tmp_lat = float(data['address']['location']['latitude'])
+        point = str(WKTElement(f"POINT({tmp_long} {tmp_lat})", srid=0))
+        print(f'   main.py |   post:/addCustomer  |   FROM FRONTEND point: {point}')    
+    data['address']['location'] = point      
+    print(f'   main.py |   post:/addCustomer  |   data: {data['address']['location']}')
+      
+        #point = WKTElement(f"POINT({data['address']['location']['longitude']} {data['address']['location']['latitude']})", srid=4326)
+     
+    print()
+    print()
+    print()
+    print("   main.py |   post:/addCustomer  |   SETTING DATABASE ")
+    customer = Customer(**data['customer'])
+    address = Address(**data['address'])
+    city = City(**data['city'])
+    country = Country(**data['country'])
+    # if not address.address_id:
+    #     address.address_id = None
+    customer.address_id = address.address_id
+    address.city_id = city.city_id
+    city.country_id = country.country_id
     
-    # customer = Customer(data.get("customer"))
-    # address = Address(data.get("address"))
-    # city = City(data.get("city"))
-    # country = Country(data.get("country"))
-    
-    pprint(f'customer: {customer}, address: {address}, city: {city}, country: {country}')
+    # print(f'   main.py |   post:/addCustomer  |   BEFORE DB[ Customer: ]')
+    # print_object(customer)
+    # print(f'   main.py |        post:/addCustomer  |   [ Address: ]')
+    # print_object(address)
+    # print(f'   main.py |        post:/addCustomer  |   [ City: ]')
+    # print_object(city)
+    # print(f'   main.py |        post:/addCustomer  |   [ Country: ]')
+    # print_object(country)
+
     session = SessionLocal()
-    customer.store_id = 1
-    session.add(customer)
-    session.add(address)
-    session.add(city)
-    session.add(country)
-    session.commit()
-    # customer = session.query(automap.classes.customer).filter(automap.classes.customer.email == , automap.classes.customer.store_id == store_id).first()    
-    # address = session.query(automap.classes.address).filter(automap.classes.address.address_id == customer.address_id).first()            
-    # city = session.query(automap.classes.city).filter(automap.classes.city.city_id == address.city_id).first()
-    # country = session.query(automap.classes.country).filter(automap.classes.country.country_id == city.country_id).first()
-    session.refresh(customer)
+    if not country.country_id:
+        session.add(country)
+        session.commit()
+        session.refresh(country)
+    city.country_id = country.country_id
+    if not city.city_id:
+        session.add(city)
+        session.commit()
+        session.refresh(city)
+    address.city_id = city.city_id
+    if not address.address_id:
+        session.add(address)
+        session.commit()
+        session.refresh(address)
+    customer.address_id = address.address_id
+    
+    # print(f'   main.py |   post:/addCustomer  |   AFTER ADDRESS TO DB[ Customer: ]')
+    # print_object(customer)
+    # print(f'   main.py |        post:/addCustomer  |   [ Address: ]')
+    # print_object(address)
+    # print(f'   main.py |        post:/addCustomer  |   [ City: ]')
+    # print_object(city)
+    # print(f'   main.py |        post:/addCustomer  |   [ Country: ]')
+    # print_object(country)
+    if not customer.customer_id:
+        session.add(customer)
+        session.commit()
+        session.refresh(customer)
+
+   
+    print(f'   main.py |   post:/addCustomer  |   AFTER CUSTOMER TO DB[ Customer: ]')
+    print_object(customer)
+    print(f'   main.py |        post:/addCustomer  |   [ Address: ]')
+    print_object(address)
+    print(f'   main.py |        post:/addCustomer  |   [ City: ]')
+    print_object(city)
+    print(f'   main.py |        post:/addCustomer  |   [ Country: ]')
+    print_object(country)
+ 
+
+    email = customer.email
+    store_id = 1
+    customer = None
+    address = None
+    city = None
+    country = None
+    
+    customer = session.query(automap.classes.customer).filter(automap.classes.customer.email == email, automap.classes.customer.store_id == store_id).first()    
+    # need to fill in the customer object with the address
+    address = session.query(automap.classes.address).filter(automap.classes.address.address_id == customer.address_id).first()            
+    city = session.query(automap.classes.city).filter(automap.classes.city.city_id == address.city_id).first()
+    country = session.query(automap.classes.country).filter(automap.classes.country.country_id == city.country_id).first()
+    session.close()
     return {
+        "status": "success",
         "newcustomer": "false",
         "fieldsNtypes": fieldsNtypes,
         "customer": to_dict( automap,  customer),
@@ -120,6 +206,7 @@ async def addCustomer(request: Request):
         "cities": "",
         "countries": ""
     }
+
     
 
 

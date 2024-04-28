@@ -5,19 +5,19 @@
 import axios from 'axios';
 
 export default async function handler(req, res) {
-  console.log("addCustomer.js  |  Hellow from addCustomer.js")
-  console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+  console.log('Request received at /api/proxy/addCustomer');
+  console.log('    /api/proxy/addCustomer  | POST  |  Forwarding to FastAPI server');
+  
+  const { customer, address, city, country } = req.body;
+  console.log('    /api/proxy/addCustomer  |  Customer:', customer);
+  console.log('    /api/proxy/addCustomer  |  Address:', address);
+  console.log('    /api/proxy/addCustomer  |  City:', city);
+  console.log('    /api/proxy/addCustomer  |  Country:', country);
+  // Now you can use customer, address, city, and country in your code
 
-  const customer = req.body.customer;
-  const address = req.body.address;
-  const city = req.body.city;
-  const country = req.body.country;
+  const response = await axios.post('http://fastapi:8000/addCustomer', {customer, address, city, country});
+  console.log('    /api/proxy/addCustomer  |  FastAPI server response:', response.status);
+  console.log('    /api/proxy/addCustomer  |  FastAPI server response data:', response.data);
+  return res.status(response.status).json(response.data);
 
-  try {
-    const response = await axios.post('http://fastapi:8000/addCustomer', {customer, address, city, country});
-
-    res.status(response.status).json(response.data);
-  } catch (error) {
-    res.status(error.response?.status || 500).json(error.response?.data || { error: 'An error occurred' });
-  }
 }
