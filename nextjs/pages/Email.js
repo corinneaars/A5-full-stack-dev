@@ -7,7 +7,7 @@
 </form>
 
 <form onSubmit={isNewEmail}>
-      <head>
+  <head>
     <title>Simple login form</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
     <style>
