@@ -85,6 +85,31 @@ def saveNewCustomer(customer: dict):
     return customerjson
 
 
+@app.get("/getAmericanCustomers")
+def getAmericanCustomers():
+    engine = create_engine(DATABASE_URL)
+    automap = automap_base()
+    automap.prepare(engine, reflect=True)
+
+    SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    session = SessionLocal()
+    try:
+        result = session.execute(text("""
+            SELECT customer.last_name, customer.email, city.city
+            FROM customer
+            JOIN address ON customer.address_id = address.address_id
+            JOIN city ON address.city_id = city.city_id
+            JOIN country ON city.country_id = country.country_id
+            WHERE country.country = 'United States'
+            
+        """))
+        # customers = [{"first_name": row[0], "last_name": row[1], "email": row[2], "city": row[3]} for row in result]
+        # return customers
+        americans = [{"email": row[0], "city": row[1]} for row in result]
+        return americans
+    finally:
+        session.close()
+
     
 @app.post("/rentVideos")
 def rent_videos(data: dict):

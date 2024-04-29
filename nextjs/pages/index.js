@@ -15,6 +15,7 @@ export default function Home() {
                 <div className="ml-10 flex items-baseline space-x-4 bg-black">
                   <Link href='/CanadianCustomers' className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">🇨🇦 Customers</Link>
                   <Link href='/RentVideos' className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Rent Videos</Link>
+                  <Link href='/AmericanCustomers' className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Americans</Link>
                 </div>
               </div>
             </div>
