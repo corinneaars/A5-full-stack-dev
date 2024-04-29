@@ -50,7 +50,7 @@ export default function Home() {
                     width="350"
                   />
                 </div> */}
-                <span href='/RentVideos' className="flex justify-center">LOG IN</span>
+                <span className="flex justify-center">LOG IN</span>
               </Link>
               <br className="sm:hidden" />
               {/* <a
