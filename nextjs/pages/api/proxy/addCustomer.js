@@ -5,13 +5,19 @@
 import axios from 'axios';
 
 export default async function handler(req, res) {
-  const { body } = req;
+  console.log('Request received at /api/proxy/addCustomer');
+  console.log('    /api/proxy/addCustomer  | POST  |  Forwarding to FastAPI server');
+  
+  const { customer, address, city, country } = req.body;
+  console.log('    /api/proxy/addCustomer  |  Customer:', customer);
+  console.log('    /api/proxy/addCustomer  |  Address:', address);
+  console.log('    /api/proxy/addCustomer  |  City:', city);
+  console.log('    /api/proxy/addCustomer  |  Country:', country);
+  // Now you can use customer, address, city, and country in your code
 
-  try {
-    const response = await axios.post('http://fastapi:8000/addCustomer', body);
+  const response = await axios.post('http://fastapi:8000/addCustomer', {customer, address, city, country});
+  console.log('    /api/proxy/addCustomer  |  FastAPI server response:', response.status);
+  console.log('    /api/proxy/addCustomer  |  FastAPI server response data:', response.data);
+  return res.status(response.status).json(response.data);
 
-    res.status(response.status).json(response.data);
-  } catch (error) {
-    res.status(error.response?.status || 500).json(error.response?.data || { error: 'An error occurred' });
-  }
 }
