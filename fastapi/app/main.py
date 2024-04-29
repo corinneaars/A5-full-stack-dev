@@ -1,3 +1,4 @@
+import time
 from datetime import datetime, timedelta
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
@@ -207,57 +208,77 @@ async def addCustomer(request: Request):
         "countries": ""
     }
 
+  
+@app.get('/checkVideoAvailability/{storeID}/{customerID}/{videoID}')
+def checkVideoAvailability(storeID: int, customerID: int, videoID: str):
+    print("   main.py |   get:/checkVideoAvailability  |   HELLO! checkVideoAvailability")
+    # store_id = 1
     
-
-
+    # video_ids = [videoID.split(',') if ',' in videoID else videoID]
+    video_ids = videoID.split(',') if ',' in videoID else [videoID]
+    video_ids = [int(id) for id in video_ids]
+    print(f'   main.py |   get:/checkVideoAvailability  |   video_ids: {video_ids}')
     
-@app.post("/rentVideos")
-def rent_videos(data: dict):
-    engine = create_engine(DATABASE_URL)
-    automap = automap_base()
-    automap.prepare(engine, reflect=True)
-    
-    SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    filmsRented = []   
     session = SessionLocal()
-    rental = automap.classes.Rental()
-    store = automap.classes.Store()
-    rental.customer_id = data["customer_id"]
-    rental.inventory_id = data["inventory_id"]
-    rental.rental_date = datetime.now() 
-    rental.return_date = datetime.now() + timedelta(days=5)
-    store.id = 1
-    rental.staff_id = 1
-    session.add(rental)
-    session.commit()
-    session.refresh(rental)
-    rentaljson = rental.__dict__
     
-    return rentaljson
-    
-@app.get('/checkVideoAvailability/${storeid}/${id}')
-def checkVideoAvailability(storeid: int, id: int):
-    engine = create_engine(DATABASE_URL)
-    automap = automap_base()
-    automap.prepare(engine, reflect=True)
-    
-    SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-    session = SessionLocal()
-    result = session.execute(text("""
-        SELECT inventory.inventory_id, film.title
-        FROM inventory
-        JOIN film ON inventory.film_id = film.film_id
-        JOIN store ON inventory.store_id = store.store_id
-        WHERE film_id = :film_id 
-        AND store.store_id = :store_id
-        AND inventory_id NOT IN (
-            SELECT inventory_id
-            FROM rental
-            WHERE return_date IS NULL
+    for video_id in video_ids:
+        result = session.execute(text("""
+            SELECT inventory.inventory_id, inventory.film_id , inventory.store_id, film.title, film.rental_rate, film.description
+            FROM inventory
+            JOIN film ON inventory.film_id = film.film_id
+            JOIN store ON inventory.store_id = store.store_id
+            WHERE store.store_id = :store_id
+            AND inventory.film_id = :video_id
+            LIMIT 1
+        """), {"video_id": video_id, "store_id": storeID})
+        for row in result.fetchall():
+            print(f'   main.py |   get:/checkVideoAvailability  |   row: {row}')
+            film = {
+                "inventory_id": row[0],
+                "film_id": row[1],
+                "store_id": row[2],
+                "title": row[3],
+                "rental_rate": row[4],
+                "description": row[5],
+                "due_date": datetime.now().replace(hour=23, minute=0, second=0) + timedelta(days=5)
+            }
+            filmsRented.append(film)
+        print()
+        print()
+        print(f'   main.py |   get:/checkVideoAvailability  |   filmsRented: {filmsRented}')
+        print()
+        
+    # Add the rental record to the database for the films that are available in our store
+    # for i, film in enumerate(filmsRented):
+    for film in filmsRented:
+        i=0
+        rental_date = datetime.now() + timedelta(seconds=i)  # Add a delay to the rental_date
+        rental = Rental(
+            rental_date=rental_date,
+            inventory_id=film["inventory_id"],
+            customer_id=customerID,
+            return_date=film["due_date"],
+            staff_id=1
         )
-    """), {"film_id": id, "store_id": storeid})
-    inventory = [row[0] for row in result]
-    return inventory
-
+        i = i + 1
+        session.add(rental)
+        session.commit()
+        time.sleep(1)  # Wait for 1 second before the next iteration            
+        session.close()
+    
+    result_json = {
+        "status": "success",
+        "filmsRented": filmsRented
+    }
+    print()
+    print()
+    print('RESULT >>>>>>>>>>>>>>>>>>>')
+    print(result_json)
+    print()
+    print()
+    
+    return result_json
 
   
 @app.get('/getCustomerbyEmail/{email}')

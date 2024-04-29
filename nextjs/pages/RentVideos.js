@@ -15,7 +15,7 @@ export default function RentVideos() {
   const [cities, setCities] = useState([]);
   const [countries, setCountries] = useState([]);
   const [videoId, setVideoId] = useState('');
-  const [rentedVideos, setRentedVideos] = useState([]);
+  const [rentedVideos, setRentedVideos] = useState('');
   const [customerForm, setCustomerForm] = useState({
     customer: {
       customer_id: "",
@@ -95,7 +95,7 @@ export default function RentVideos() {
     console.log("   RentVideos.js  |  AND we are backe here (success?): ", response.success);
     console.log("   RentVideos.js  |  AND we are backe here: ", response.data);
     if (response.status === 200) {
-      setNewCustomer(response.data.newcustomer);
+      // setNewCustomer(response.data.newcustomer);
       setCustomer(response.data.customer);
       setAddress(response.data.address);
       setCity(response.data.city);
@@ -117,14 +117,21 @@ export default function RentVideos() {
   const handleVideoIdSubmit = async (event) => {
     event.preventDefault();
 
-    const response = await axios.get(`/api/proxy/checkVideoAvailability/${videoId}`);
-    if (response.data.available) {
-      setRentedVideos([...rentedVideos, response.data.video]);
+    const store_id = customerForm.customer.store_id;
+    const customer_id = customerForm.customer.customer_id;
+
+    const response = await axios.get(`/api/proxy/checkVideoAvailability/${store_id}/${customer_id}/${videoId}`);
+    if (response.status === 200) {
+      setRentedVideos([...rentedVideos, response.data.filmsRented]);
+      console.log("   RentVideos.js  |  AND we are backe here: RENTEDVIDEOS", response.data.filmsRented);
       setVideoId('');
     } else {
       alert(`Video ${videoId} is not available`);
     }
   };
+
+
+// <<<<<<<<<<<< ALL THE FORMS ARE FROM HERE ON >>>>>>>>>>>>>>
 return (
   <div>
     {step === 1 && (
@@ -259,9 +266,29 @@ return (
         </label>
         <button type="submit">Rent Video</button>
       </form>
+
     )}
 
     {rentedVideos.length > 0 && (
+    <div>
+      {newcustomer === 'true' && <h2>NEW Customer Saved successfully</h2>}
+      { newcustomer === 'false' && <h2>Customer Found</h2>}
+      {console.log("   RentVideos.js  |  rentedVideos: ", rentedVideos)}
+
+      <h2>Customer Information</h2>
+      <label>
+        First Name:
+        <input type="text" id="first_name" name="first_name" value={customerForm.customer.first_name} readOnly />
+      </label>
+      <label>
+        Last Name:
+        <input type="text" id="last_name" name="last_name" value={customerForm.customer.last_name} readOnly />
+      </label>
+      <label>
+        Email:
+        <input type="email" id="customer_email" name="customer_email" value={customerForm.customer.email} readOnly />
+      </label>
+      <h2>Rented Videos: </h2>
       <table>
         <thead>
           <tr>
@@ -269,21 +296,22 @@ return (
             <th>Title</th>
             <th>Description</th>
             <th>Price</th>
-            <th>Available</th>
+            <th>Due Date</th>
           </tr>
         </thead>
         <tbody>
-          {rentedVideos.map(video => (
+          {rentedVideos[0].map(video => (
             <tr key={video.id}>
-              <td>{video.id}</td>
+              <td>{video.inventory_id}</td>
               <td>{video.title}</td>
               <td>{video.description}</td>
-              <td>{video.price}</td>
-              <td>{video.available ? 'TRUE' : 'FALSE'}</td>
+              <td>{video.rental_rate}</td>
+              <td>{video.due_date}</td>
             </tr>
           ))}
         </tbody>
       </table>
+    </div>
     )}
   </div>
 );
