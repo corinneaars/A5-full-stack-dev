@@ -40,7 +40,7 @@ export default function Home() {
                 className="transition duration-700 inline-flex items-center px-5 py-3 text-medium font-medium text-gray-300 text-xl transition duration-300 bg-black rounded hover:bg-gray-800 dark:hover:bg-gray-200 dark:text-gray-700 dark:bg-white hover:transform hover:scale-125"
                 aria-label="learn more"
                 rel="noreferrer"
-                href='/1_Email'
+                href='/RentVideos'
               >
                 {/* <div className="flex justify-center">
                   <img
