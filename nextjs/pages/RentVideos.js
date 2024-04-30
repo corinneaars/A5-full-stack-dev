@@ -167,7 +167,7 @@ return (
               <form onSubmit={getCustomerbyEmail}>
                 <label className = "inline-flex text-medium font-medium text-gray-300">
                   Email:
-                  <input className = "text-gray-800" type="email" id="email" name="email" value={email} onChange={e => setEmail(e.target.value)} />
+                  <input className = "text-gray-100 dark:text-gray-800 md:text-2xl" type="email" id="email" name="email" value={email} onChange={e => setEmail(e.target.value)} />
                 </label>
                 <br />
                 <button type="submit"
@@ -249,21 +249,21 @@ return (
         
                   <label className = "inline-flex text-medium font-medium text-gray-300">
                     First Name: 
-                    <input type="text" className="dark-input" id="first_name" name="first_name" value={customerForm.customer.first_name} onChange={e => setCustomerForm({...customerForm, customer: {...customerForm.customer, first_name: e.target.value}})} required />
+                    <input type="text" className = "text-gray-100 dark:text-gray-800" id="first_name" name="first_name" value={customerForm.customer.first_name} onChange={e => setCustomerForm({...customerForm, customer: {...customerForm.customer, first_name: e.target.value}})} required />
                   </label>
                   <br />
                   <br />
 
                   <label className = "inline-flex text-medium font-medium text-gray-300">
                     Last Name:
-                    <input className = "text-gray-800" type="text" id="last_name" name="last_name" value={customerForm.customer.last_name} onChange={e => setCustomerForm({...customerForm, customer: {...customerForm.customer, last_name: e.target.value}})} required />
+                    <input className = "text-gray-100 dark:text-gray-800" name="last_name" value={customerForm.customer.last_name} onChange={e => setCustomerForm({...customerForm, customer: {...customerForm.customer, last_name: e.target.value}})} required />
                   </label>
                   <br />
                   <br />
 
                   <label className = "inline-flex text-medium font-medium text-gray-300">
                     Email:  
-                    <input type="email" id="customer_email" name="customer_email" value={customerForm.customer.email} onChange={e => setCustomerForm({...customerForm, customer: {...customerForm.customer, email: e.target.value}})} required />
+                    <input className = "text-gray-100 dark:text-gray-800" type="email" id="customer_email" name="customer_email" value={customerForm.customer.email} onChange={e => setCustomerForm({...customerForm, customer: {...customerForm.customer, email: e.target.value}})} required />
                   </label>
                   <br />
                   <br />
@@ -278,42 +278,42 @@ return (
         
                   <label className = "inline-flex text-medium font-medium text-gray-300">
                     Address:  
-                    <input type="text" id="address" name="address" value={customerForm.address.address} onChange={e => setCustomerForm({...customerForm, address: {...customerForm.address, address: e.target.value}})} required />
+                    <input className = "text-gray-900 dark:text-gray-100 md:text-6xl" type="text" id="address" name="address" value={customerForm.address.address} onChange={e => setCustomerForm({...customerForm, address: {...customerForm.address, address: e.target.value}})} required />
                   </label>
                   <br />
                   <br />
 
                   <label className = "inline-flex text-medium font-medium text-gray-300">
                     District:  
-                    <input type="text" id="district" name="district" value={customerForm.address.district} onChange={e => setCustomerForm({...customerForm, address: {...customerForm.address, district: e.target.value}})} required />
+                    <input className = "text-gray-900 dark:text-gray-100 md:text-6xl" type="text" id="district" name="district" value={customerForm.address.district} onChange={e => setCustomerForm({...customerForm, address: {...customerForm.address, district: e.target.value}})} required />
                   </label>
                   <br />
                   <br />
 
                   <label className = "inline-flex text-medium font-medium text-gray-300">
                     Postal Code:
-                    <input type="text" id="postal_code" name="postal_code" value={customerForm.address.postal_code} onChange={e => setCustomerForm({...customerForm, address: {...customerForm.address, postal_code: e.target.value}})} required />
+                    <input className = "text-gray-900 dark:text-gray-100 md:text-6xl" type="text" id="postal_code" name="postal_code" value={customerForm.address.postal_code} onChange={e => setCustomerForm({...customerForm, address: {...customerForm.address, postal_code: e.target.value}})} required />
                   </label>
                   <br />
                   <br />
 
                   <label className = "inline-flex text-medium font-medium text-gray-300">
                     Phone:
-                    <input type="text" id="phone" name="phone" value={customerForm.address.phone} onChange={e => setCustomerForm({...customerForm, address: {...customerForm.address, phone: e.target.value}})} required />
+                    <input className = "text-gray-900 dark:text-gray-100 md:text-6xl" type="text" id="phone" name="phone" value={customerForm.address.phone} onChange={e => setCustomerForm({...customerForm, address: {...customerForm.address, phone: e.target.value}})} required />
                   </label>
                   <br />
                   <br />
 
                   <label className = "inline-flex text-medium font-medium text-gray-300">
                     Longitude:
-                    <input type="number" id="longitude" name="longitude" step="any" value={customerForm.address.location.longitude} onChange={e => setCustomerForm({...customerForm, address: {...customerForm.address, location: {...customerForm.address.location, longitude: e.target.value}}})} required />
+                    <input className = "text-gray-900 dark:text-gray-100 md:text-6xl" type="number" id="longitude" name="longitude" step="any" value={customerForm.address.location.longitude} onChange={e => setCustomerForm({...customerForm, address: {...customerForm.address, location: {...customerForm.address.location, longitude: e.target.value}}})} required />
                   </label>
                   <br />
                   <br />
 
                   <label className = "inline-flex text-medium font-medium text-gray-300">
                     Latitude:
-                    <input type="number" id="latitude" name="latitude" step="any" value={customerForm.address.location.latitude} onChange={e => setCustomerForm({...customerForm, address: {...customerForm.address, location: {...customerForm.address.location, latitude: e.target.value}}})} required />
+                    <input className = "text-gray-900 dark:text-gray-100 md:text-6xl" type="number" id="latitude" name="latitude" step="any" value={customerForm.address.location.latitude} onChange={e => setCustomerForm({...customerForm, address: {...customerForm.address, location: {...customerForm.address.location, latitude: e.target.value}}})} required />
                   </label>
                   <br />
                   <br />
@@ -327,8 +327,8 @@ return (
 
                   <label className = "inline-flex text-medium font-medium text-gray-300">
                     City:
-                    <input type="hidden" value={customerForm.city.city_id}  name="city_id" id="city_id" />
-                    <input type="text" id="city" name="city" value={customerForm.city.city} onChange={e => {
+                    <input className = "text-gray-900 dark:text-gray-100 md:text-6xl" type="hidden" value={customerForm.city.city_id}  name="city_id" id="city_id" />
+                    <input className = "text-gray-900 dark:text-gray-100 md:text-6xl" type="text" id="city" name="city" value={customerForm.city.city} onChange={e => {
                       const value = e.target.value;
                       setCustomerForm({...customerForm, city: {...customerForm.city, city: value, city_id: ""}});
                       if (value) {
@@ -356,7 +356,7 @@ return (
                   <label className = "inline-flex text-medium font-medium text-gray-300">
                     Country:
                     <input type="hidden" value={customerForm.country.country_id}  name="country_id" id="country_id" />
-                    <input type="text" id="country" name="country" value={customerForm.country.country} onChange={e => {
+                    <input className = "text-gray-900 dark:text-gray-100 md:text-6xl" type="text" id="country" name="country" value={customerForm.country.country} onChange={e => {
                       const value = e.target.value;
                       setCustomerForm({...customerForm, country: {...customerForm.country, country: value, country_id: ""}});
                       if (value) {
@@ -469,21 +469,21 @@ return (
                 <form onSubmit={handleVideoIdSubmit}>
                   <label className = "inline-flex text-medium font-medium text-gray-300">
                     First Name:
-                    <input type="text" id="first_name" name="first_name" value={customerForm.customer.first_name} readOnly />
+                    <input className = "text-gray-100 dark:text-gray-800 md:text-2xl" type="text" id="first_name" name="first_name" value={customerForm.customer.first_name} readOnly />
                   </label>
                   <br />
                   <br />
 
                   <label className = "inline-flex text-medium font-medium text-gray-300">
                     Last Name:
-                    <input type="text" id="last_name" name="last_name" value={customerForm.customer.last_name} readOnly />
+                    <input className = "text-gray-100 dark:text-gray-800 md:text-2xl" type="text" id="last_name" name="last_name" value={customerForm.customer.last_name} readOnly />
                   </label>
                   <br />
                   <br />
 
                   <label className = "inline-flex text-medium font-medium text-gray-300">
                     Email:
-                    <input type="email" id="customer_email" name="customer_email" value={customerForm.customer.email} readOnly />
+                    <input className = "text-gray-100 dark:text-gray-800 md:text-2xl" type="email" id="customer_email" name="customer_email" value={customerForm.customer.email} readOnly />
                   </label>
                   <br />
                   <br />
@@ -492,7 +492,7 @@ return (
 
                   <label className = "inline-flex text-medium font-medium text-gray-300">
                     Video ID(s):   
-                    <input type="text" id="video_id" name="video_id" value={videoId} onChange={e => setVideoId(e.target.value)} />
+                    <input className = "text-gray-100 dark:text-gray-800 md:text-2xl" type="text" id="video_id" name="video_id" value={videoId} onChange={e => setVideoId(e.target.value)} />
                   </label>
                   <br />
                   <br />
@@ -589,18 +589,20 @@ return (
                   {console.log("   RentVideos.js  |  rentedVideos: ", rentedVideos)}
 
                   <br />
-                  <h2>Customer Information</h2>
+                  <h2 className = "md:text-2xl">Customer Information</h2>
                   <label>
                     First Name:
-                    <input type="text" id="first_name" name="first_name" value={customerForm.customer.first_name} readOnly />
+                    <input className = "text-gray-100 dark:text-gray-800 md:text-2xl" type="text" id="first_name" name="first_name" value={customerForm.customer.first_name} readOnly />
                   </label>
                   <label>
                     Last Name:
-                    <input type="text" id="last_name" name="last_name" value={customerForm.customer.last_name} readOnly />
+                    <input className = "text-gray-100 dark:text-gray-800 md:text-2xl" type="text" id="last_name" name="last_name" value={customerForm.customer.last_name} readOnly />
                   </label>
+                  <br />
+                  <br />
                   <label>
                     Email:
-                    <input type="email" id="customer_email" name="customer_email" value={customerForm.customer.email} readOnly />
+                    <input className = "text-gray-100 dark:text-gray-800 md:text-2xl" type="email" id="customer_email" name="customer_email" value={customerForm.customer.email} readOnly />
                   </label>
                   <br />
                   <br />
@@ -650,12 +652,16 @@ return (
                     :)
                   </p>
                 </div>
+                <div className="max-w-7x2 mx-auto px-2 sm:px-6 lg:px-8 bg-black"></div>
               </div>
+            </div>
+            <div className="max-w-7x2 mx-auto px-2 sm:px-6 lg:px-8 bg-black">
             </div>
           </section>
         </nav>
-      </Layout>
-          
+        <div className="max-w-7x2 mx-auto px-2 sm:px-6 lg:px-8 bg-black">
+        </div>
+      </Layout>    
     )}
   </div>
 );
