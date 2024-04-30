@@ -655,8 +655,6 @@ return (
                 <div className="max-w-7x2 mx-auto px-2 sm:px-6 lg:px-8 bg-black"></div>
               </div>
             </div>
-            <div className="max-w-7x2 mx-auto px-2 sm:px-6 lg:px-8 bg-black">
-            </div>
           </section>
         </nav>
         <div className="max-w-7x2 mx-auto px-2 sm:px-6 lg:px-8 bg-black">
