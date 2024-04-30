@@ -427,108 +427,14 @@ return (
             </section>
           </nav>
         </Layout>
-
-        // <h2>Customer Information (OLD 2)</h2>
-        // <input type="hidden" value={customerForm.newcustomer} name="newcustomer" id="newcustomer" />
-        // <input type="hidden" value={customerForm.customer.customer_id} name="customer_id" id="customer_id" />
-        // <input type="hidden" value={customerForm.customer.store_id}  name="store_id" id="store_id"/>
-        // <label>
-        //   First Name:
-        //   <input type="text" id="first_name" name="first_name" value={customerForm.customer.first_name} onChange={e => setCustomerForm({...customerForm, customer: {...customerForm.customer, first_name: e.target.value}})} required />
-        // </label>
-        // <label>
-        //   Last Name:
-        //   <input type="text" id="last_name" name="last_name" value={customerForm.customer.last_name} onChange={e => setCustomerForm({...customerForm, customer: {...customerForm.customer, last_name: e.target.value}})} required />
-        // </label>
-        // <label>
-        //   Email:
-        //   <input type="email" id="customer_email" name="customer_email" value={customerForm.customer.email} onChange={e => setCustomerForm({...customerForm, customer: {...customerForm.customer, email: e.target.value}})} required />
-        // </label>
-
-        // <h2>Address Information</h2>
-        // <input type="hidden" value={customerForm.address.address_id} name="address_id" id="address_id" />
-        // <label>
-        //   Address:
-        //   <input type="text" id="address" name="address" value={customerForm.address.address} onChange={e => setCustomerForm({...customerForm, address: {...customerForm.address, address: e.target.value}})} required />
-        // </label>
-        // <label>
-        //   District:
-        //   <input type="text" id="district" name="district" value={customerForm.address.district} onChange={e => setCustomerForm({...customerForm, address: {...customerForm.address, district: e.target.value}})} required />
-        // </label>
-        // <label>
-        //   Postal Code:
-        //   <input type="text" id="postal_code" name="postal_code" value={customerForm.address.postal_code} onChange={e => setCustomerForm({...customerForm, address: {...customerForm.address, postal_code: e.target.value}})} required />
-        // </label>
-        // <label>
-        //   Phone:
-        //   <input type="text" id="phone" name="phone" value={customerForm.address.phone} onChange={e => setCustomerForm({...customerForm, address: {...customerForm.address, phone: e.target.value}})} required />
-        // </label>
-        // <label>
-        //   Longitude:
-        //   <input type="number" id="longitude" name="longitude" step="any" value={customerForm.address.location.longitude} onChange={e => setCustomerForm({...customerForm, address: {...customerForm.address, location: {...customerForm.address.location, longitude: e.target.value}}})} required />
-        // </label>
-        // <label>
-        //   Latitude:
-        //   <input type="number" id="latitude" name="latitude" step="any" value={customerForm.address.location.latitude} onChange={e => setCustomerForm({...customerForm, address: {...customerForm.address, location: {...customerForm.address.location, latitude: e.target.value}}})} required />
-        // </label>
-        // <h2>City Information</h2>
-        // <label>
-        //   City:
-        //   <input type="hidden" value={customerForm.city.city_id}  name="city_id" id="city_id" />
-        //   <input type="text" id="city" name="city" value={customerForm.city.city} onChange={e => {
-        //     const value = e.target.value;
-        //     setCustomerForm({...customerForm, city: {...customerForm.city, city: value, city_id: ""}});
-        //     if (value) {
-        //       setCitySuggestions(cities.filter(city => city.city.toLowerCase().startsWith(value.toLowerCase())));
-        //     } else {
-        //       setCitySuggestions([]);
-        //     }
-        //   }} />
-        //   {citySuggestions.length > 0 && (
-        //     <div className="suggestions">
-        //       {citySuggestions.map((suggestion, index) => (
-        //         <div key={index} onClick={() => {
-        //           setCustomerForm({...customerForm, city: {...customerForm.city, city: suggestion.city, city_id: suggestion.city_id}});
-        //           setCitySuggestions([]);
-        //         }}>
-        //           {suggestion.city}
-        //         </div>
-        //       ))}
-        //     </div>
-        //   )}
-        // </label>
-
-        // <label>
-        //   Country:
-        //   <input type="hidden" value={customerForm.country.country_id}  name="country_id" id="country_id" />
-        //   <input type="text" id="country" name="country" value={customerForm.country.country} onChange={e => {
-        //     const value = e.target.value;
-        //     setCustomerForm({...customerForm, country: {...customerForm.country, country: value, country_id: ""}});
-        //     if (value) {
-        //       setCountrySuggestions(countries.filter(country => country.country.toLowerCase().startsWith(value.toLowerCase())));
-        //     } else {
-        //       setCountrySuggestions([]);
-        //     }
-        //   }} />
-        //   {countrySuggestions.length > 0 && (
-        //     <div className="suggestions">
-        //       {countrySuggestions.map((suggestion, index) => (
-        //         <div key={index} onClick={() => {
-        //           setCustomerForm({...customerForm, country: {...customerForm.country, country: suggestion.country, country_id: suggestion.country_id}});
-        //           setCountrySuggestions([]);
-        //         }}>
-        //           {suggestion.country}
-        //         </div>
-        //       ))}
-        //     </div>
-        //   )}
-        // </label>
-        // <input type="submit" value="Submit" />
-      // </form>
     )}
 
+
+
+
+    {/* STEP 3 -------------------------------------------------------------------------- */}
     {step === 3 && (
-      <form onSubmit={handleVideoIdSubmit}>
+      // <form onSubmit={handleVideoIdSubmit}>
         <Layout>
           <nav className="bg-gray-800">
             <div className="max-w-7x2 mx-auto px-2 sm:px-6 lg:px-8 bg-black">
@@ -556,31 +462,52 @@ return (
                 </h1>
                 <p className = "text-gray-300">
                   You are ready to rent videos. 
-                  Please enter desired Video ID(s). Video IDs are integers and must be comma separated, thank you.
+                  Please enter your information and desired Video ID(s). Video IDs are integers and must be comma separated with no spaces, thank you.
                 </p>
+
                 <br />
-                <form>
+                <form onSubmit={handleVideoIdSubmit}>
                   <label className = "inline-flex text-medium font-medium text-gray-300">
-                    Video ID:   
-                    <input type="text" className = "text-gray-800"/>
+                    First Name:
+                    <input type="text" id="first_name" name="first_name" value={customerForm.customer.first_name} readOnly />
                   </label>
-                  {/* <button type="submit">Next</button> */}
+                  <br />
+                  <br />
+
+                  <label className = "inline-flex text-medium font-medium text-gray-300">
+                    Last Name:
+                    <input type="text" id="last_name" name="last_name" value={customerForm.customer.last_name} readOnly />
+                  </label>
+                  <br />
+                  <br />
+
+                  <label className = "inline-flex text-medium font-medium text-gray-300">
+                    Email:
+                    <input type="email" id="customer_email" name="customer_email" value={customerForm.customer.email} readOnly />
+                  </label>
+                  <br />
+                  <br />
+
+                  <h2 className = "text-gray-300">Video Lookup</h2>
+
+                  <label className = "inline-flex text-medium font-medium text-gray-300">
+                    Video ID(s):   
+                    <input type="text" id="video_id" name="video_id" value={videoId} onChange={e => setVideoId(e.target.value)} />
+                  </label>
+                  <br />
+                  <br />
+
+                  <button type="submit"
+                    className="mt-6 text-center md:ml-6 transition duration-700 inline-flex items-center px-5 py-3 text-medium font-medium text-gray-300 text-xl transition duration-300 bg-black rounded hover:bg-gray-800 dark:hover:bg-gray-200 dark:text-gray-700 dark:bg-white hover:transform hover:scale-125">
+                    SUBMIT RENTAL
+                  </button>
+                  <br />
+                  <br />
+                  
                 </form>
-                
-                <div className="mt-6 text-center md:ml-6">
-                  <Link
-                    className="transition duration-700 inline-flex items-center px-5 py-3 text-medium font-medium text-gray-300 text-xl transition duration-300 bg-black rounded hover:bg-gray-800 dark:hover:bg-gray-200 dark:text-gray-700 dark:bg-white hover:transform hover:scale-125"
-                    aria-label="learn more"
-                    rel="noreferrer"
-                    href='/3_Customer'
-                  >
-                    <span className="flex justify-center">SUBMIT RENTAL</span>
-                  </Link>
-                  <br className="sm:hidden" />
-                </div>
               </div>
           
-              <div className="relative w-full py-10 mx-auto text-center md:py-32 md:my-12 md:w-10/12">
+              {/* <div className="relative w-full py-10 mx-auto text-center md:py-32 md:my-12 md:w-10/12">
                 <div className="relative z-10">
                   <a
                     target="_blank"
@@ -599,80 +526,136 @@ return (
                 </div>
                 <p className="z-10 my-8 text-sm font-medium text-gray-500">
                   :)
-                </p>
-              </div>
+                </p> 
+               </div> */}
             </div>
             </section>
           </nav>
         </Layout>
 
-        {/* OLD VERSION ------------------------------- */}
-        <h2>Customer Information (OLD 3)</h2>
-        <label>
-          First Name:
-          <input type="text" id="first_name" name="first_name" value={customerForm.customer.first_name} readOnly />
-        </label>
-        <label>
-          Last Name:
-          <input type="text" id="last_name" name="last_name" value={customerForm.customer.last_name} readOnly />
-        </label>
-        <label>
-          Email:
-          <input type="email" id="customer_email" name="customer_email" value={customerForm.customer.email} readOnly />
-        </label>
-        <h2>Video Lookup</h2>
-        <label>
-          Video ID:
-          <input type="text" id="video_id" name="video_id" value={videoId} onChange={e => setVideoId(e.target.value)} />
-        </label>
-        <button type="submit">Rent Video</button>
-      </form>
+        // {/* OLD VERSION ------------------------------- */}
+      //   <h2>Customer Information (OLD 3)</h2>
+      //   <label>
+      //     First Name:
+      //     <input type="text" id="first_name" name="first_name" value={customerForm.customer.first_name} readOnly />
+      //   </label>
+      //   <label>
+      //     Last Name:
+      //     <input type="text" id="last_name" name="last_name" value={customerForm.customer.last_name} readOnly />
+      //   </label>
+      //   <label>
+      //     Email:
+      //     <input type="email" id="customer_email" name="customer_email" value={customerForm.customer.email} readOnly />
+      //   </label>
+      //   <h2>Video Lookup</h2>
+      //   <label>
+      //     Video ID:
+      //     <input type="text" id="video_id" name="video_id" value={videoId} onChange={e => setVideoId(e.target.value)} />
+      //   </label>
+      //   <button type="submit">Rent Video</button>
+      // // </form>
 
     )}
 
     {rentedVideos.length > 0 && (
-    <div>
-      {newcustomer === 'true' && <h2>NEW Customer Saved successfully</h2>}
-      { newcustomer === 'false' && <h2>Customer Found</h2>}
-      {console.log("   RentVideos.js  |  rentedVideos: ", rentedVideos)}
+      <Layout>
+        <nav className="bg-gray-800">
+          {/* <div className="max-w-7x2 mx-auto px-2 sm:px-6 lg:px-8 bg-black">
+            <div className="relative flex items-center justify-between h-16">
+              <div className="flex items-center">
+                <div className="flex-shrink-0">
+                </div>
+                <div className="hidden md:block">
+                  <div className="ml-10 flex items-baseline space-x-4 bg-black">
+                    <Link href='/CanadianCustomers' className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">🇨🇦 Customers</Link>
+                    <Link href='/RentVideos' className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Rent Videos</Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> */}
+          <section className="relative">
+            <div className="px-4 pt-10 mx-auto max-w-7xl md:pt-16">
+              <div className="w-full pb-5 mx-auto text-center md:w-11/12">
+                <h1 className="mb-3 text-5xl font-bold tracking-tight text-gray-300 dark:text-gray-100 md:text-6xl">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r dark:bg-gradient-to-r from-green-500 via-indigo-500 to-purple-500 dark:from-green-500 dark:via-indigo-400 dark:to-purple-500">
+                  RENTAL LOG
+                </span>
+                <br />
+                </h1>
+                <div className = "text-gray-300">
+                  {newcustomer === 'true' && <h2>NEW Customer Saved successfully</h2>}
+                  { newcustomer === 'false' && <h2>Customer Found</h2>}
+                  {console.log("   RentVideos.js  |  rentedVideos: ", rentedVideos)}
 
-      <h2>Customer Information</h2>
-      <label>
-        First Name:
-        <input type="text" id="first_name" name="first_name" value={customerForm.customer.first_name} readOnly />
-      </label>
-      <label>
-        Last Name:
-        <input type="text" id="last_name" name="last_name" value={customerForm.customer.last_name} readOnly />
-      </label>
-      <label>
-        Email:
-        <input type="email" id="customer_email" name="customer_email" value={customerForm.customer.email} readOnly />
-      </label>
-      <h2>Rented Videos: </h2>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Price</th>
-            <th>Due Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rentedVideos[0].map(video => (
-            <tr key={video.id}>
-              <td>{video.inventory_id}</td>
-              <td>{video.title}</td>
-              <td>{video.description}</td>
-              <td>{video.rental_rate}</td>
-              <td>{video.due_date}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+                  <br />
+                  <h2>Customer Information</h2>
+                  <label>
+                    First Name:
+                    <input type="text" id="first_name" name="first_name" value={customerForm.customer.first_name} readOnly />
+                  </label>
+                  <label>
+                    Last Name:
+                    <input type="text" id="last_name" name="last_name" value={customerForm.customer.last_name} readOnly />
+                  </label>
+                  <label>
+                    Email:
+                    <input type="email" id="customer_email" name="customer_email" value={customerForm.customer.email} readOnly />
+                  </label>
+                  <br />
+                  <br />
+
+                  <h2>Rented Videos: </h2>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Due Date</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {rentedVideos[0].map(video => (
+                        <tr key={video.id}>
+                          <td>{video.inventory_id}</td>
+                          <td>{video.title}</td>
+                          <td>{video.description}</td>
+                          <td>{video.rental_rate}</td>
+                          <td>{video.due_date}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="relative w-full py-10 mx-auto text-center md:py-32 md:my-12 md:w-10/12">
+                  <div className="relative z-10">
+                    <a
+                      target="_blank"
+                      rel="noreferrer"
+                      href="https://nextjstemplates.com/templates/plutonium"
+                    >
+                      <div className="flex justify-center">
+                        <img
+                          className="transition duration-700 rounded-xl ring-1 ring-black ring-opacity-5 hover:transform hover:scale-105"
+                          src="/next.svg"
+                          alt="Placeholder Image"
+                          width="350"
+                        />
+                      </div>
+                    </a>
+                  </div>
+                  <p className="z-10 my-8 text-sm font-medium text-gray-500">
+                    :)
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+        </nav>
+      </Layout>
+          
     )}
   </div>
 );
