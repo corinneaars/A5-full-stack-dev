@@ -1,6 +1,6 @@
 # Welcome to Our Assignment 5 Site!
 
-To get this app running on your machine, run the following script:
+To get this app running on your machine, open a new terminal and either navigate to the folder on your local machine or open the folder in PyCharm/VS Code and open a new terminal.  Then run the following script:
 `docker compose up --build --detach`
 
 If you want to have logs for nextjs and fastapi, and not for mysql, then you can run the following:
