@@ -146,6 +146,7 @@ return (
                 </div>
                 <div className="hidden md:block">
                   <div className="ml-10 flex items-baseline space-x-4 bg-black">
+                    <Link href="/" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Home</Link>
                     <Link href='/CanadianCustomers' className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">🇨🇦 Customers</Link>
                     <Link href='/RentVideos' className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Rent Videos</Link>
                   </div>
@@ -218,6 +219,7 @@ return (
                   </div>
                   <div className="hidden md:block">
                     <div className="ml-10 flex items-baseline space-x-4 bg-black">
+                      <Link href='/' className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Home</Link>
                       <Link href='/CanadianCustomers' className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">🇨🇦 Customers</Link>
                       <Link href='/RentVideos' className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Rent Videos</Link>
                     </div>
@@ -444,6 +446,7 @@ return (
                   </div>
                   <div className="hidden md:block">
                     <div className="ml-10 flex items-baseline space-x-4 bg-black">
+                      <Link href='/' className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Home</Link>
                       <Link href='/CanadianCustomers' className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">🇨🇦 Customers</Link>
                       <Link href='/RentVideos' className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Rent Videos</Link>
                     </div>
@@ -579,7 +582,7 @@ return (
               <div className="w-full pb-5 mx-auto text-center md:w-11/12">
                 <h1 className="mb-3 text-5xl font-bold tracking-tight text-gray-300 dark:text-gray-100 md:text-6xl">
                 <span className="text-transparent bg-clip-text bg-gradient-to-r dark:bg-gradient-to-r from-green-500 via-indigo-500 to-purple-500 dark:from-green-500 dark:via-indigo-400 dark:to-purple-500">
-                  RENTAL LOG
+                  RENTAL CONFIRMATION
                 </span>
                 <br />
                 </h1>
