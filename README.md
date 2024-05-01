@@ -16,3 +16,26 @@ After you have entered in the ids of the videos to rent, click rent videos and t
 ## To clean:
 `docker compose down --remove-orphans --rmi all --volumes`
 `./docker-clean.sh`
+
+## Design Documentation
+
+### Part 1: Front Page Redesign
+
+
+The ‘index.js’ or initial home page was redesigned to reflect the aesthetic and functional needs of a DVD Rental Business. With updated colors and formatting, the site is clearer in purpose. 
+Three buttons are found in the top tab of the page. The buttons are white text against the black upper tab. The Home button references the home page. The CA Customers button references the previous assignment with the table of Canadian customers. The Rent Videos tab is an alternate path to the Log In screen.
+The center of the screen includes a welcome message and instructions to press the “LOG IN” button to access the site.
+These design choices provide a simple but aesthetically pleasing means of navigating the site. The framework of design for the front page was then applied to the rest of the site’s pages.
+
+### Part 2: Customer and Rental Management
+
+The “RentVideos.js” page allows the store to add a new customer and assign video rentals to them. This page covers three screen options including:
+Log In Screen
+Registration Screen
+Video Rental Screen/ Confirmation Screen
+
+The Log In Screen is the initial screen that requires a user to enter their email address and then press the “NEXT” button. If the email address already exists within the database (such that the user already has an account), they will be taken to the Video Rental Screen. If the email address does not exist (such that the user is new), they will be taken to the Registration Screen.
+
+The Registration Screen requires customers to fill in their information in order to create an account. This is the form to add new customers to the database. Clicking the “SUBMIT” button will submit their information and take them to the Video Rental Screen. 
+
+The Video Rental Screen will show a user’s name and email address, then permit them to submit video rentals by typing in Video IDs. Video IDs must be comma-separated with no spaces. Pressing the “SUBMIT RENTAL” button will bring up the Confirmation Screen which relays the customer information as well as information about the requested videos. The confirmation screen displays the post submission detailing the new customer addition, a successful transaction, and due dates for the rented video(s).
